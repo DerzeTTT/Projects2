@@ -1,0 +1,1 @@
+DC_Library = require('discord.js');
