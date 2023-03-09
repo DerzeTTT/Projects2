@@ -1,4 +1,4 @@
-Reading = open("../liczby.txt", "r").read().split("\n");
+Reading = [Line for Line in open('../liczby.txt', 'r').read().split("\n") if Line != ''];
 Holding = [];
 
 def Parse_Num(Line):
@@ -11,8 +11,6 @@ def Parse_Num(Line):
 
 for v in Reading:
 
-    if v != '':
-
-        Parse_Num(v);
+    Parse_Num(v);
 
 print(len(Holding), Holding[0]);
