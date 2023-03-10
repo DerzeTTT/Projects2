@@ -20,9 +20,27 @@ function toDays(Seconds){
 
 };
 
-function getLargestInOBJ 
+function getLargestInDict(tDict){
 
-Periods = {};
+    let Largest = [[], 0];
+
+    for (const[_,Dates] of Object.entries(tDict)){
+
+        if (Array.isArray(Dates)){
+
+            if (Dates.length > Largest[1]){
+
+                Largest = [Dates, Dates.length]
+
+            };
+
+        };
+
+    };
+
+    return Largest;
+
+};
 
 for (const [_,Data] of Object.entries(List)){
 
@@ -40,37 +58,41 @@ Dates.sort((a,b) => {
 
 });
 
-Periods = {};
-Previous = null;
+let Periods = {};
+let Previous = null;
 
-currentPeriod = 0;
+let currentPeriod = 0;
 
 for (let i = 0; i < Dates.length; i++){
 
-    v = Dates[i];
+    let v = Dates[i];
 
     if (i == 0){
 
         Previous = v;
-        Periods[currentPeriod] = {};
+        Periods[currentPeriod] = [];
 
     };
 
-    sincePassed = (v.getTime() - Previous.getTime()) / 1000;
-    isFrequent = (toDays(sincePassed) <= 1);
+    let sincePassed = (v.getTime() - Previous.getTime()) / 1000;
+    let isFrequent = (toDays(sincePassed) <= 1);
 
     if (!isFrequent){
 
         currentPeriod++;
 
-        Periods[currentPeriod] = {};
+        Periods[currentPeriod] = [];
 
     } else {
 
-        Periods[currentPeriod][v] = true;
+        Periods[currentPeriod].push(v);
 
     };
 
     Previous = v;
 
 };
+
+let largestFound = getLargestInDict(Periods);
+
+console.log(`Najwiekszy okres trwal ${largestFound[1]} dni od ${largestFound[0][0]} do ${largestFound[0][1]}`);
