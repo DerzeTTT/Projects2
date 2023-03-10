@@ -20,6 +20,8 @@ function toDays(Seconds){
 
 };
 
+function getLargestInOBJ 
+
 Periods = {};
 
 for (const [_,Data] of Object.entries(List)){
@@ -39,7 +41,9 @@ Dates.sort((a,b) => {
 });
 
 Periods = {};
-Previous = [];
+Previous = null;
+
+currentPeriod = 0;
 
 for (let i = 0; i < Dates.length; i++){
 
@@ -47,10 +51,26 @@ for (let i = 0; i < Dates.length; i++){
 
     if (i == 0){
 
-        Previous = [v];
+        Previous = v;
+        Periods[currentPeriod] = {};
 
     };
 
-    
+    sincePassed = (v.getTime() - Previous.getTime()) / 1000;
+    isFrequent = (toDays(sincePassed) <= 1);
+
+    if (!isFrequent){
+
+        currentPeriod++;
+
+        Periods[currentPeriod] = {};
+
+    } else {
+
+        Periods[currentPeriod][v] = true;
+
+    };
+
+    Previous = v;
 
 };
