@@ -1,0 +1,6 @@
+{
+
+    "difficulty": "hard", // Opcje trudnosci: Easy, Medium, Hard
+    "endingScore": "3" // Konczacy wynik
+    
+}
