@@ -1,12 +1,25 @@
 import keyboard
 import random as ran
 import json
+import os
 
-settingsFile = open("settings.json", 'r')
-loadedSettings = json.load(settingsFile.read())
+settingsPath = os.path.join(os.path.dirname(__file__), "settings.json")
+
+settingsFile = open(settingsPath, 'r').read()
+loadedSettings = json.loads(settingsFile)
 
 playing = True
-endingResult = int(loadedSettings["endingScore"])
+endingResult = loadedSettings["endingScore"]
+
+difficultyPools = {
+
+    'hard':45,
+    'medium':25,
+    'easy':15
+
+}
+
+lossRates = difficultyPools.get(loadedSettings['difficulty'])
 
 class terminalColors:
 
@@ -63,9 +76,33 @@ def expectResponse():
 
     return [pressed, options.get(pressed)]
 
-def rollResponse():
+def findLosing(id):
 
-    AIPick = ran.randint(1,3)
+    for i in options:
+
+        v = options[i]
+
+        if v.get('wins') == id:
+
+            return i
+
+def rollResponse(playerPick):
+
+    ranPick = ran.random()*100
+    AIPick = 0
+
+    available = [i for i in range(1, 3+1)]
+    oppositePick = findLosing(playerPick)
+
+    if ranPick <= lossRates:
+
+        AIPick = oppositePick
+
+    else:
+
+        newList = [v for v in available if v != int(oppositePick)]
+        AIPick = ran.choice(newList)
+
     parsedPick = options.get(str(AIPick))
 
     return [AIPick, parsedPick]
