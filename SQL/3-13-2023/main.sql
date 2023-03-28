@@ -1,8 +1,13 @@
-Select OrderId, DateOrdered, DateShipped, C.Country, C.RegionId into #z ad7 FROM Orders
-JOIN Customer AS C ON C.CustomerId = C.CustomerId
-WHERE COUNTRY = 'Japan'
+DECLARE @lol INT = 0;
 
-SELECT DATEDIFF(DAY, DateOrdered, DateShipped) AS Diff, OrderId FROM #Zad7
+WHILE @lol < 10
+BEGIN
 
-SELECT AVG(diff), RegionName FROM zad7_CTE AS C
-LEFT JOIN Region AS R ON R.RegionId = C.RegionId
+    PRINT REPLICATE('-', @lol);
+
+    IF @lol < 5
+     SET @lol = @lol + 1;
+    ELSE
+     SET @lol = @lol - 1;
+
+END;
