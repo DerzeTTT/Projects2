@@ -21,6 +21,29 @@ for i in range(len(asciiWelcome)):
 
     print(printingStr)
 
-    time.sleep(.25)
+    time.sleep(.05)
 
-getpass.getpass(f"{utilities.terminalColors.BOLD}press any key to continue..{utilities.terminalColors.ENDC}")
+#getpass.getpass(f"{utilities.terminalColors.BOLD}press any key to continue..{utilities.terminalColors.ENDC}")
+
+def rollNextQuestion():
+
+    print("\n"*3)
+
+    question, questionData = utilities.rollQuestion()
+
+    print(f"Pytanie o: {utilities.terminalColors.UNDERLINE}{utilities.prizes[utilities.currentPoint]}zł{utilities.terminalColors.ENDC}")
+    print(f'\n{utilities.terminalColors.WARNING}{question}{utilities.terminalColors.ENDC}')
+
+    returnedInput = utilities.requestInput(questionData)
+
+    print(f"Pressed {returnedInput}")
+
+def checkCondition():
+
+    return True
+
+while checkCondition():
+
+    rollNextQuestion()
+
+    time.sleep(1)

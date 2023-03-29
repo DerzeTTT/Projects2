@@ -1,6 +1,8 @@
 import easygui
 import pandas as pd
 import os
+import random as ran
+import keyboard
 
 questionsPath = os.path.join(os.path.dirname(__file__), "questions.csv")
 questionsRaw = pd.read_csv(questionsPath).values
@@ -55,17 +57,32 @@ checkpoints = [1, 6, len(prizes)-1]
 
 currentPoint = 0
 
-def displayInfo():
+def requestInput(picked):
 
-    print(f"Pytanie o: {prizes[currentPoint]}zł")
+    for i in picked:
+            
+        if i == "correct": continue
 
-def requestInput():
+        v = picked.get(i)
+        print(f"Nacisnij klawisz {terminalColors.OKCYAN}[{i}]{terminalColors.ENDC} aby wybrać: {v}")
 
-    pass
+    while True:
+
+        pressedKey = keyboard.read_key().lower()
+
+        if picked.get(pressedKey.upper()):
+
+            break
+
+    return picked.get(pressedKey)
 
 def rollQuestion():
 
-    currentPoint += 1
+    global currentPoint
+
     prize = prizes[currentPoint]
 
-    displayInfo()
+    rolledQuestion = ran.choice(list(questionsData.items()))
+    currentPoint += 1
+
+    return rolledQuestion
