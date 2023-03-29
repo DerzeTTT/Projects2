@@ -2,6 +2,7 @@ import keyboard
 import random as ran
 import json
 import os
+import sys
 
 settingsPath = os.path.join(os.path.dirname(__file__), "settings.json")
 
