@@ -1,0 +1,18 @@
+5
+put Marek
+put Janek
+put Monika
+put Barbara
+put Eustachy
+put Gerwazy
+count
+get
+get
+put Darek
+count
+get
+count
+get
+get
+get
+get

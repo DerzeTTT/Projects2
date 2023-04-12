@@ -156,21 +156,138 @@
 
 -- Zad. 10
 
-CREATE OR ALTER TRIGGER trgZmianaZamowienia ON Zamowienie AFTER UPDATE AS
-BEGIN
+-- CREATE OR ALTER TRIGGER trgZmianaZamowienia ON Zamowienie AFTER UPDATE AS
+-- BEGIN
 
-  IF UPDATE(Status)
+--   IF UPDATE(Status)
 
-  BEGIN
+--   BEGIN
 
-    INSERT INTO HistoriaZamowienia (ZamowienieId, DataZmiany, StatusPrzed, StatusPo)
-    SELECT ins.ZamowienieId, GETDATE(), del.Status, ins.Status
-    FROM inserted AS ins
-    INNER JOIN deleted AS del ON ins.ZamowienieId = del.ZamowienieId
+--     INSERT INTO HistoriaZamowienia (ZamowienieId, DataZmiany, StatusPrzed, StatusPo)
+--     SELECT ins.ZamowienieId, GETDATE(), del.Status, ins.Status
+--     FROM inserted AS ins
+--     INNER JOIN deleted AS del ON ins.ZamowienieId = del.ZamowienieId
 
-  END
+--   END
 
-END
+-- END
 
 
-INSERT INTO
+-- INSERT INTO
+
+-- Zad. 12
+
+-- CREATE OR ALTER TRIGGER trgBlockNegativeOrder ON Zamowienie FOR INSERT AS
+-- BEGIN
+
+--   IF EXISTS (SELECT * FROM inserted WHERE Wartosc < 0)
+--   BEGIN
+
+--     PRINT 'Order value was negative'
+--     ROLLBACK TRANSACTION
+
+--   END
+
+-- END
+
+-- INSERT INTO Zamowienie 
+-- VALUES (55, 10, -500.00, 'NOWE')
+
+-- Zad. 13
+
+-- CREATE OR ALTER TRIGGER trgAdditionalDiscount ON Zamowienie FOR INSERT AS
+-- BEGIN
+
+--   IF (SELECT SUM(Wartosc) FROM inserted) > 1000
+
+--   BEGIN
+
+--     UPDATE Zamowienie
+--     SET Wartosc = Wartosc * 0.9
+
+--     WHERE Id IN (SELECT Id FROM inserted)
+
+--   END
+
+-- END
+
+-- INSERT INTO Zamowienie
+-- VALUES (58, 10, 1001, 'NOWE')
+
+-- Zad. 14
+
+-- CREATE OR ALTER PROC testProc
+--   @OrderId INT,
+--   @ClientId INT
+-- AS
+-- BEGIN
+
+--   BEGIN TRANSACTION
+
+--   DECLARE @Status NVARCHAR(50)
+
+--   SELECT @Status = Status FROM Zamowienie WHERE Id = @OrderId
+
+--   IF @Status = 'NOWE' AND EXISTS (SELECT * FROM Klient WHERE Id = @ClientId)
+
+--   BEGIN
+
+--     UPDATE Zamowienie
+--     SET Status = 'WYSLANE'
+--     WHERE Id = @OrderId
+
+--     INSERT INTO HistoriaZamowienia (ZamowienieId, DataZmiany, StatusPo)
+--     VALUES (@OrderId, GETDATE(), 'WYSLANE')
+
+--     COMMIT TRANSACTION
+
+--   END
+
+--   ELSE
+
+--   BEGIN
+
+--     ROLLBACK TRANSACTION
+--     PRINT 'Invalid input'
+
+--   END
+
+-- END
+
+-- EXEC testProc
+-- @OrderId = 58,
+-- @ClientId = 10
+
+-- Zad. 15
+
+-- BEGIN TRANSACTION
+
+-- DECLARE @ClientId INT
+-- SET @ClientId = 10
+
+-- IF NOT EXISTS (SELECT * FROM Zamowienie WHERE KlientId = @ClientId)
+-- BEGIN
+
+--   DELETE FROM Klient WHERE Id = @ClientId
+--   COMMIT TRANSACTION
+
+-- END
+
+-- ELSE
+
+-- BEGIN
+
+--   PRINT 'Klient ma zamowienia'
+--   ROLLBACK TRANSACTION
+
+-- END
+
+-- Zad. 16
+
+BEGIN TRANSACTION
+
+UPDATE Zamowienie
+SET Wartosc = Wartosc * 1.1
+WHERE Wartosc < 1000 AND Status = 'ZAKONCZONE'
+
+COMMIT TRANSACTION
