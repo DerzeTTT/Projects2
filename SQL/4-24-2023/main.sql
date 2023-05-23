@@ -1,0 +1,15 @@
+--Zad. 1
+
+-- CREATE LOGIN OkUser3 WITH PASSWORD='ok'
+
+
+--Zad. 2
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON OBJECT::Customer TO OkUser3
+
+--Zad. 3
+
+REVOKE SELECT, INSERT, UPDATE, DELETE ON OBJECT::Customer TO OkUser3
+
+--Zad. 4
+
