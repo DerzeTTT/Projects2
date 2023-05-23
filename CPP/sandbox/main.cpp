@@ -1,11 +1,12 @@
 #include <iostream>
+#include <string>
 
 using namespace std;
 
 int main(){
 
-    cout << "halo xd" << endl;
+    cout << "Test " + returnAppended("Okey") << endl;
 
     return 0;
 
-}
+};
